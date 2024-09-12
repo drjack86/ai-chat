@@ -61,65 +61,12 @@ const Chat: React.FC = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Scrivi un messaggio..."
+                    onKeyDown={(event) => { if (event.key === 'Enter') { sendMessage() } }}
                 />
                 <button onClick={sendMessage}>Invia</button>
                 <button onClick={handleReset}>Reset</button>
             </div>
 
-            <style jsx>{`
-        .chat-container {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          height: 100vh;
-          max-width: 600px;
-          margin: 0 auto;
-          background-color: #f0f0f0;
-          border-radius: 10px;
-          overflow: hidden;
-        }
-        .chat-box {
-          padding: 10px;
-          flex-grow: 1;
-          overflow-y: auto;
-          background-color: #e5ddd5;
-        }
-        .message {
-          margin: 10px 0;
-          padding: 10px;
-          border-radius: 20px;
-          max-width: 70%;
-        }
-        .user-message {
-          background-color: #dcf8c6;
-          align-self: flex-end;
-        }
-        .assistant-message {
-          background-color: #ffffff;
-          align-self: flex-start;
-        }
-        .input-box {
-          display: flex;
-          padding: 10px;
-          background-color: white;
-          border-top: 1px solid #ddd;
-        }
-        input {
-          flex-grow: 1;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 20px;
-        }
-        button {
-          margin-left: 10px;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 20px;
-          background-color: #075e54;
-          color: white;
-          cursor: pointer;
-        }
-      `}</style>
         </div>
     );
 };
