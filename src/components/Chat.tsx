@@ -43,28 +43,29 @@ const Chat: React.FC = () => {
     };
 
     return (
-        <div className="chat-container">
-            <div className="chat-box">
+        <div className="flex flex-col justify-between h-screen max-w-[600px] mx-auto bg-gray-200 rounded-lg overflow-hidden">
+            <div className="p-2 flex-grow overflow-y-auto bg-[#e5ddd5] flex flex-col">
                 {messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`message ${message.sender === 'user' ? 'user-message' : 'assistant-message'}`}
+                        className={`my-2 p-2 rounded-lg max-w-[70%] ${message.sender === 'user' ? 'bg-[#dcf8c6] self-end' : 'bg-white self-start'}`}
                     >
                         {message.text}
                     </div>
                 ))}
             </div>
 
-            <div className="input-box">
+            <div className="flex p-2 bg-white border-t border-gray-300">
                 <input
+                    className="flex-grow p-2 border border-gray-300 rounded-lg"
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Scrivi un messaggio..."
                     onKeyDown={(event) => { if (event.key === 'Enter') { sendMessage() } }}
                 />
-                <button onClick={sendMessage}>Invia</button>
-                <button onClick={handleReset}>Reset</button>
+                <button className="ml-1 p-2 rounded-lg bg-[#075e54] text-white cursor-pointer text-sm font-bold" onClick={sendMessage}>Invia</button>
+                <button className="ml-1 p-2 rounded-lg bg-[#075e54] text-white cursor-pointer text-sm font-bold" onClick={handleReset}>Reset</button>
             </div>
 
         </div>
