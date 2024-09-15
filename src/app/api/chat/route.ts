@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
                     { role: "system", content: `${process.env.PROMPT}` },
                     ...messages, // Includi tutti i messaggi precedenti
                 ],
-                max_tokens: `${process.env.MAX_TOKEN}`,
+                max_tokens: parseInt(process.env.MAX_TOKEN ?? ""),
             }),
         });
 
