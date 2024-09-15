@@ -50,7 +50,8 @@ const Chat: React.FC = () => {
                         key={index}
                         className={`my-2 p-2 rounded-lg max-w-[70%] ${message.sender === 'user' ? 'bg-[#dcf8c6] self-end' : 'bg-white self-start'}`}
                     >
-                        {message.text}
+
+                        <div dangerouslySetInnerHTML={{ __html: message.text }} />
                     </div>
                 ))}
             </div>
