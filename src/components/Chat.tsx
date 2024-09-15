@@ -48,7 +48,7 @@ const Chat: React.FC = () => {
                 {messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`my-2 p-2 rounded-lg max-w-[70%] ${message.sender === 'user' ? 'bg-[#dcf8c6] self-end' : 'bg-white self-start'}`}
+                        className={`my-2 p-2 rounded-lg max-w-[70%] text-gray-800 ${message.sender === 'user' ? 'bg-[#dcf8c6] self-end' : 'bg-white self-start'}`}
                     >
 
                         <div dangerouslySetInnerHTML={{ __html: message.text }} />
