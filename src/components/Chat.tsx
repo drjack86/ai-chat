@@ -1,5 +1,7 @@
 "use client"
 
+import { faPaperPlane, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 
 interface Message {
@@ -58,15 +60,15 @@ const Chat: React.FC = () => {
 
             <div className="flex p-2 bg-white border-t border-gray-300">
                 <input
-                    className="flex-grow p-2 border border-gray-300 rounded-lg"
+                    className="flex-grow p-2 border border-gray-300 rounded-lg text-gray-800"
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Scrivi un messaggio..."
                     onKeyDown={(event) => { if (event.key === 'Enter') { sendMessage() } }}
                 />
-                <button className="ml-1 p-2 rounded-lg bg-[#075e54] text-white cursor-pointer text-sm font-bold" onClick={sendMessage}>Invia</button>
-                <button className="ml-1 p-2 rounded-lg bg-[#075e54] text-white cursor-pointer text-sm font-bold" onClick={handleReset}>Reset</button>
+                <button className="ml-1 p-2 px-4 rounded-lg bg-green-700 text-white cursor-pointer text-xl font-bold" onClick={sendMessage}><FontAwesomeIcon icon={faPaperPlane} /></button>
+                <button className="ml-1 p-2 px-4 rounded-lg bg-red-900 text-white cursor-pointer text-xl font-bold" onClick={handleReset}><FontAwesomeIcon icon={faTrashCan} /></button>
             </div>
 
         </div>
