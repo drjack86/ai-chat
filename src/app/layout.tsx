@@ -4,8 +4,8 @@ import "./globals.css";
 import { Inter } from 'next/font/google'
 
 export const metadata: Metadata = {
-    title: "Volley AI Trainer",
-    description: "Chiedi al nostro trainer",
+    title: `${process.env.NEXT_PUBLIC_TITLE_APP}`,
+    description: `${process.env.NEXT_PUBLIC_TITLE_DESCRIPTION}`,
 };
 
 const inter = Inter({
