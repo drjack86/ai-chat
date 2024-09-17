@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
-import { faPaperPlane, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faSpinner, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import clsx from 'clsx';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Message {
     sender: 'user' | 'assistant';
@@ -14,8 +15,35 @@ const Chat: React.FC = () => {
         { sender: 'assistant', text: `${process.env.NEXT_PUBLIC_INITIAL_ASSISTANT_MESSAGE}` }
     ]);
     const [input, setInput] = useState('');
+    const [waiting, setWaiting] = useState(false);
+
+    // Riferimenti per il contenitore dei messaggi e l'icona di attesa
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const waitingIconRef = useRef<HTMLDivElement>(null);
+
+    // Funzione per fare scroll fino all'icona di attesa
+    const scrollToWaitingIcon = () => {
+        waitingIconRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Funzione per fare scroll fino all'inizio dell'ultimo messaggio
+    const scrollToLastMessage = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    useEffect(() => {
+        if (waiting) {
+            // Se in attesa, scrolla fino all'icona di attesa
+            scrollToWaitingIcon();
+        } else {
+            // Se non in attesa e ci sono nuovi messaggi, scrolla fino all'ultimo messaggio
+            scrollToLastMessage();
+        }
+    }, [waiting, messages]);
 
     const sendMessage = async () => {
+        setWaiting(true);
+
         if (input.trim() === '') return;
 
         const userMessage: Message = { sender: 'user', text: input };
@@ -32,6 +60,8 @@ const Chat: React.FC = () => {
         });
 
         const { assistantMessage } = await response.json();
+
+        setWaiting(false);
 
         setMessages((prevMessages) => [
             ...prevMessages,
@@ -52,10 +82,15 @@ const Chat: React.FC = () => {
                         key={index}
                         className={`my-2 p-2 rounded-lg max-w-[70%] text-gray-800 ${message.sender === 'user' ? 'bg-[#dcf8c6] self-end' : 'bg-white self-start'}`}
                     >
-
                         <div dangerouslySetInnerHTML={{ __html: message.text }} />
                     </div>
                 ))}
+                {/* Riferimento per l'icona di attesa */}
+                <div ref={waitingIconRef} className={clsx('mx-auto', { 'hidden': !waiting }, { 'block': waiting })}>
+                    <FontAwesomeIcon icon={faSpinner} spinPulse className="text-green-800 text-2xl" />
+                </div>
+                {/* Riferimento per l'inizio dell'ultimo messaggio */}
+                <div ref={messagesEndRef} />
             </div>
 
             <div className="flex p-2 bg-white border-t border-gray-300">
@@ -65,12 +100,15 @@ const Chat: React.FC = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Scrivi un messaggio..."
-                    onKeyDown={(event) => { if (event.key === 'Enter') { sendMessage() } }}
+                    onKeyDown={(event) => { if (event.key === 'Enter') { sendMessage(); } }}
                 />
-                <button className="ml-1 p-2 px-4 rounded-lg bg-green-700 text-white cursor-pointer text-xl font-bold" onClick={sendMessage}><FontAwesomeIcon icon={faPaperPlane} /></button>
-                <button className="ml-1 p-2 px-4 rounded-lg bg-red-900 text-white cursor-pointer text-xl font-bold" onClick={handleReset}><FontAwesomeIcon icon={faTrashCan} /></button>
+                <button className="ml-1 p-2 px-4 rounded-lg bg-green-700 text-white cursor-pointer text-xl font-bold" onClick={sendMessage}>
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                </button>
+                <button className="ml-1 p-2 px-4 rounded-lg bg-red-900 text-white cursor-pointer text-xl font-bold" onClick={handleReset}>
+                    <FontAwesomeIcon icon={faTrashCan} />
+                </button>
             </div>
-
         </div>
     );
 };
